@@ -13,6 +13,41 @@ class Scene():
     def handleInput(self):
         pass
 
+class GameOverScene(Scene):
+    def __init__(self, screen, game):
+        super().__init__(screen, game)
+        self.font = pygame.font.SysFont('Arial', 40)
+        self.gameOverString = "Game Over!"
+        w, h = self.font.size(self.gameOverString)
+        sw, sh = self.screen.get_size()
+        self.xpos = sw / 2 - w / 2
+        self.ypos = sh / 2 - h / 2
+        self.smallfont = pygame.font.SysFont('Arial', 20)
+        self.subtitleString = "Press SPACE to restart"
+        wsmall, hsmall = self.smallfont.size(self.subtitleString)
+        self.smallxpos = sw / 2 - wsmall / 2
+        self.smallypos = sh / 2 - hsmall / 2 + h
+
+    def runScene(self):
+        self.elapsed = self.game.clock.tick(self.game.fps)
+        textsurface = self.font.render(self.gameOverString, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(textsurface, (self.xpos, self.ypos))
+        smalltestsurface = self.smallfont.render(self.subtitleString, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(smalltestsurface, (self.smallxpos, self.smallypos))
+        pygame.display.flip()
+
+    def handleInput(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: 
+                self.game.done = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    self.game.done = True
+                if event.key == pygame.K_SPACE:
+                    gameScene = GameScene(self.screen, self.game)
+                    self.game.scene = gameScene
+
+
 class TitleScene(Scene):
     def __init__(self, screen, game):
         super().__init__(screen, game)
@@ -60,6 +95,7 @@ class GameScene(Scene):
 
         self.score = 0
         self.counter = 0
+        self.missed = 0
 
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
@@ -74,6 +110,9 @@ class GameScene(Scene):
         self.draw()
         self.checkHits()
         self.counter = self.counter + 1
+        if self.missed > 5:
+            gameOverScene = GameOverScene(self.screen, self.game)
+            self.game.scene = gameOverScene
     
     def resetScreen(self):
         self.screen.fill(pygame.color.THECOLORS['black'])
@@ -105,7 +144,7 @@ class GameScene(Scene):
 
     def update(self):
         self.ship.update()
-        self.enemies.update(self.elapsed)
+        self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
 
     def spawnBullet(self):
@@ -116,6 +155,13 @@ class GameScene(Scene):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
         self.screen.blit(textsurface, (10, 598))
 
+    def drawMissed(self):
+        missedString = "Missed: " + str(self.missed)
+        w, h = self.font.size(missedString)
+        textsurface = self.font.render(missedString, False, pygame.color.THECOLORS['white'])
+        x = 800 - w
+        self.screen.blit(textsurface, (x, 598))
+
     def draw(self):
         caption = "FPS: {:.2f}".format(self.game.clock.get_fps())
         pygame.display.set_caption(caption)
@@ -125,6 +171,7 @@ class GameScene(Scene):
         for b in self.bullets:
             b.draw(self.screen)
         self.drawScore()
+        self.drawMissed()
         pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, 600), (800, 600))
         pygame.display.flip()
 
@@ -221,10 +268,11 @@ class Enemy(pygame.sprite.Sprite):
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (self.rect.x, self.rect.y), self.radius)
 
-    def update(self, elapsed):
+    def update(self, elapsed, gameScene):
         self.rect.y += self.verticalSpeed * elapsed
         if self.rect.y > 600:
             self.kill()
+            gameScene.missed += 1
         self.rect.x = self.movement()
 
         if self.rect.x < self.radius:
@@ -242,5 +290,3 @@ class Enemy(pygame.sprite.Sprite):
 game = Game()
 game.run()
     
-    
-
