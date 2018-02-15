@@ -3,41 +3,54 @@ import random
 import math
 
 class Scene():
-    def __init__(self, screen):
+    def __init__(self, screen, game):
         self.screen = screen
+        self.game = game
 
-    def run(self):
+    def runScene(self):
         pass
 
     def handleInput(self):
         pass
 
 class TitleScene(Scene):
-    def __init__(self, screen):
-        super().__init__(scene)
-
-    def run(self):
+    def __init__(self, screen, game):
+        super().__init__(screen, game)
         self.font = pygame.font.SysFont('Arial', 40)
-        textsurface = self.font.render('PyShooter', False, pygame.color.THECOLORS['white'])
-        self.screen.blit(textsurface, (10, 598))
+        w, h = self.font.size(self.game.name)
+        sw, sh = self.screen.get_size()
+        self.titlexpos = sw / 2 - w / 2
+        self.titleypos = sh / 2 - h / 2
+        self.smallfont = pygame.font.SysFont('Arial', 20)
+        self.subtitleString = "Press SPACE to start"
+        wsmall, hsmall = self.smallfont.size(self.subtitleString)
+        self.smallxpos = sw / 2 - wsmall / 2
+        self.smallypos = sh / 2 - hsmall / 2 + h
+
+    def runScene(self):
+        self.elapsed = self.game.clock.tick(self.game.fps)
+        textsurface = self.font.render(self.game.name, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(textsurface, (self.titlexpos, self.titleypos))
+        smalltestsurface = self.smallfont.render(self.subtitleString, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(smalltestsurface, (self.smallxpos, self.smallypos))
+        pygame.display.flip()
 
     def handleInput(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
-                self.done = True
+                self.game.done = True
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    self.game.done = True
                 if event.key == pygame.K_SPACE:
-                    print("Change scene")
+                    gameScene = GameScene(self.screen, self.game)
+                    self.game.scene = gameScene
 
 
-
-class Game():
-    def __init__(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((800, 630))
-        self.clock = pygame.time.Clock()
-        self.fps = 60
-        self.done = False
+class GameScene(Scene):
+    def __init__(self, screen, game):
+        super().__init__(screen, game)
+        
         self.resetScreen()
 
         self.elapsed = 0
@@ -51,6 +64,17 @@ class Game():
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
 
+    def runScene(self):
+        self.resetScreen()
+        if self.counter % 180 == 0:
+            self.spawnEnemy()
+        self.elapsed = self.game.clock.tick(self.game.fps)
+        self.handleInput()
+        self.update()
+        self.draw()
+        self.checkHits()
+        self.counter = self.counter + 1
+    
     def resetScreen(self):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
@@ -58,32 +82,13 @@ class Game():
         enemy = Enemy()
         self.enemies.add(enemy)
 
-    def run(self):
-        while not self.done:
-            self.resetScreen()
-            if self.counter % 180 == 0:
-                self.spawnEnemy()
-            self.elapsed = self.clock.tick(self.fps)
-            self.handleInput()
-            self.update()
-            self.draw()
-            self.checkHits()
-            self.counter = self.counter + 1
-
-    def checkHits(self):
-        hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
-        self.score += len(hits)
-
-    def update(self):
-        self.ship.update()
-        self.enemies.update(self.elapsed)
-        self.bullets.update(self.elapsed)
-
     def handleInput(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
-                self.done = True
+                self.game.done = True
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q:
+                    self.game.done = True
                 if event.key == pygame.K_LEFT:
                     self.ship.goLeft(self.elapsed)
                 if event.key == pygame.K_RIGHT:
@@ -94,6 +99,15 @@ class Game():
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     self.ship.stop()
     
+    def checkHits(self):
+        hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
+        self.score += len(hits)
+
+    def update(self):
+        self.ship.update()
+        self.enemies.update(self.elapsed)
+        self.bullets.update(self.elapsed)
+
     def spawnBullet(self):
         bullet = Bullet(self.ship)
         self.bullets.add(bullet)
@@ -103,7 +117,7 @@ class Game():
         self.screen.blit(textsurface, (10, 598))
 
     def draw(self):
-        caption = "FPS: {:.2f}".format(self.clock.get_fps())
+        caption = "FPS: {:.2f}".format(self.game.clock.get_fps())
         pygame.display.set_caption(caption)
         self.ship.draw(self.screen)
         for e in self.enemies:
@@ -113,6 +127,24 @@ class Game():
         self.drawScore()
         pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, 600), (800, 600))
         pygame.display.flip()
+
+
+class Game():
+    def __init__(self):
+        pygame.init()
+        self.name = "PyShooter"
+        self.screen = pygame.display.set_mode((800, 630))
+        self.clock = pygame.time.Clock()
+        self.fps = 60
+        self.done = False
+        pygame.font.init()
+        self.scene = TitleScene(self.screen, self)
+
+    def run(self):
+        while not self.done:
+            self.scene.handleInput()
+            self.scene.runScene()
+
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
