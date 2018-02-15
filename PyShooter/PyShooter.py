@@ -146,6 +146,28 @@ class GameScene(Scene):
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
 
+        self.stars = self.loadBackground()
+    
+    def updateBackground(self):
+        for s in self.stars:
+            y = s.y
+            y = y + 1
+            if y > 600:
+                y = 0
+            s.y = y
+
+    def loadBackground(self):
+        stars = []
+        for i in range(0, 600, 10):
+            for j in range (0, 5):
+                x = random.randint(0, 800)
+                y = random.randint(i, i + 10)
+                s = Star(x, y)
+                stars.append(s)
+        return stars
+
+    
+
     def runScene(self):
         self.resetScreen()
         if self.counter % 180 == 0:
@@ -190,6 +212,7 @@ class GameScene(Scene):
         self.score += len(hits)
 
     def update(self):
+        self.updateBackground()
         self.ship.update()
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
@@ -212,6 +235,7 @@ class GameScene(Scene):
     def draw(self):
         caption = "FPS: {:.2f}".format(self.game.clock.get_fps())
         pygame.display.set_caption(caption)
+        self.drawBackground()
         self.ship.draw(self.screen)
         for e in self.enemies:
             e.draw(self.screen)
@@ -221,6 +245,10 @@ class GameScene(Scene):
         self.drawMissed()
         pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, 600), (800, 600))
         pygame.display.flip()
+
+    def drawBackground(self):
+        for s in self.stars:
+            pygame.draw.rect(self.screen, pygame.color.THECOLORS['white'], (s.x, s.y, 1, 1))
 
 
 class Game():
@@ -336,6 +364,11 @@ class Enemy(pygame.sprite.Sprite):
 
     def cosMovement(self):
         return -1 * math.cos(self.rect.y / 50) * self.amplitude + self.startX
+
+class Star():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
 if __name__ == "__main__":
     game = Game()
