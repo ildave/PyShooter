@@ -191,6 +191,10 @@ class Game():
         while not self.done:
             self.scene.handleInput()
             self.scene.runScene()
+        self.quit()
+
+    def quit(self):
+        pygame.quit()
 
 
 class Ship(pygame.sprite.Sprite):
@@ -286,7 +290,7 @@ class Enemy(pygame.sprite.Sprite):
     def cosMovement(self):
         return -1 * math.cos(self.rect.y / 50) * self.amplitude + self.startX
 
-
-game = Game()
-game.run()
+if __name__ == "__main__":
+    game = Game()
+    game.run()
     
