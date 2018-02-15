@@ -13,6 +13,32 @@ class Scene():
     def handleInput(self):
         pass
 
+class QuitScene(Scene):
+    def __init__(self, screen, game):
+        super().__init__(screen, game)
+        self.font = pygame.font.SysFont('Arial', 40)
+        self.byeString = "Bye!"
+        w, h = self.font.size(self.byeString)
+        sw, sh = self.screen.get_size()
+        self.xpos = sw / 2 - w / 2
+        self.ypos = sh / 2 - h / 2
+        pygame.time.set_timer(pygame.USEREVENT, 2500)
+
+    def runScene(self):
+        self.elapsed = self.game.clock.tick(self.game.fps)
+        self.screen.fill(pygame.color.THECOLORS['black'])
+        textsurface = self.font.render(self.byeString, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(textsurface, (self.xpos, self.ypos))
+        pygame.display.flip()
+
+    def handleInput(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: 
+                self.game.done = True
+            if event.type == pygame.USEREVENT:
+                pygame.time.set_timer(pygame.USEREVENT, 0)
+                self.game.done = True
+
 class GameOverScene(Scene):
     def __init__(self, screen, game):
         super().__init__(screen, game)
@@ -42,7 +68,8 @@ class GameOverScene(Scene):
                 self.game.done = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    self.game.done = True
+                    quitScene = QuitScene(self.screen, self.game)
+                    self.game.scene = quitScene
                 if event.key == pygame.K_SPACE:
                     gameScene = GameScene(self.screen, self.game)
                     self.game.scene = gameScene
@@ -94,7 +121,8 @@ class TitleScene(Scene):
                 self.game.done = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    self.game.done = True
+                    quitScene = QuitScene(self.screen, self.game)
+                    self.game.scene = quitScene
                 if event.key == pygame.K_SPACE:
                     gameScene = GameScene(self.screen, self.game)
                     self.game.scene = gameScene
@@ -145,7 +173,8 @@ class GameScene(Scene):
                 self.game.done = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:
-                    self.game.done = True
+                    quitScene = QuitScene(self.screen, self.game)
+                    self.game.scene = quitScene
                 if event.key == pygame.K_LEFT:
                     self.ship.goLeft(self.elapsed)
                 if event.key == pygame.K_RIGHT:
