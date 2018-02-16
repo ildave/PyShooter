@@ -135,7 +135,7 @@ class GameScene(Scene):
         self.resetScreen()
 
         self.elapsed = 0
-        self.ship = Ship(390, 550, 40, 40)
+        self.ship = Ship(380, 590, 40, 40)
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
 
@@ -287,6 +287,10 @@ class Ship(pygame.sprite.Sprite):
         self.color = pygame.color.THECOLORS['yellow']
         
         self.horizontalSpeed = 0
+
+        self.pointA = (x, y)
+        self.pointB = (x + w, y)
+        self.pointC = (x + h/2, y - h)
     
     def update(self):
         if self.horizontalSpeed > 3:
@@ -298,6 +302,25 @@ class Ship(pygame.sprite.Sprite):
             self.rect.x = 0
         if self.rect.x > 800 - self.width:
             self.rect.x = 800 - self.width
+
+        ax, ay = self.pointA
+        bx, by = self.pointB
+        cx, cy = self.pointC
+        newax = ax + self.horizontalSpeed
+        newbx = bx + self.horizontalSpeed
+        newcx = cx + self.horizontalSpeed
+        if newax < 0:
+            newax = 0
+            newbx = newax + 40
+            newcx = newax + 20
+        elif newbx > 800:
+            newbx = 800
+            newax = newbx - 40
+            newcx = newbx - 20
+        self.pointA = (newax, ay)
+        self.pointB = (newbx, by)
+        self.pointC = (newcx, cy)
+
     
     def goLeft(self, elapsed):
         self.horizontalSpeed += -1 * elapsed
@@ -308,8 +331,8 @@ class Ship(pygame.sprite.Sprite):
 
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, (self.rect.x, self.rect.y, self.width, self.height))
-
+        pygame.draw.polygon(screen, self.color, [self.pointA, self.pointB, self.pointC])
+    
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, ship):
         super().__init__()
@@ -317,8 +340,9 @@ class Bullet(pygame.sprite.Sprite):
         self.height = 10
         self.image = pygame.Surface([self.width, self.height])
         self.rect = self.image.get_rect()
-        self.rect.x = ship.rect.x + (ship.width / 2) - self.width / 2
-        self.rect.y = ship.rect.y
+        sx, sy = ship.pointC
+        self.rect.x = sx - self.width / 2
+        self.rect.y = sy - 10
         self.color = pygame.color.THECOLORS['cyan']
         self.verticalSpeed = -0.1
 
