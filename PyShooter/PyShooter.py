@@ -138,6 +138,7 @@ class GameScene(Scene):
         self.ship = Ship(380, 590, 40, 40)
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.explosions = pygame.sprite.Group()
 
         self.score = 0
         self.counter = 0
@@ -213,12 +214,16 @@ class GameScene(Scene):
     def checkHits(self):
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         self.score += len(hits)
+        for enemy in hits:
+            expl = Explosion(enemy)
+            self.explosions.add(expl)
 
     def update(self):
         self.updateBackground()
         self.ship.update()
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
+        self.explosions.update()
 
     def spawnBullet(self):
         bullet = Bullet(self.ship)
@@ -244,6 +249,8 @@ class GameScene(Scene):
             e.draw(self.screen)
         for b in self.bullets:
             b.draw(self.screen)
+        for e in self.explosions:
+            e.draw(self.screen)
         self.drawScore()
         self.drawMissed()
         pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, 600), (800, 600))
@@ -391,6 +398,39 @@ class Enemy(pygame.sprite.Sprite):
 
     def cosMovement(self):
         return -1 * math.cos(self.rect.y / 50) * self.amplitude + self.startX
+
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, enemy):
+        super().__init__()
+        self.x = enemy.rect.x
+        self.y = enemy.rect.y
+        self.radius = enemy.radius / 2
+        self.maxradius = enemy.radius * 2
+        self.npoints = 16
+        self.points = []
+        self.getPoints()
+        self.color = pygame.color.THECOLORS['yellow']
+
+    def getPoints(self):
+        self.points = []
+        for i in range(0, self.npoints):
+            a = i / self.npoints  * math.pi * 2
+            p = (self.radius * math.sin(a) +  self.x, self.radius * math.cos(a) + self.y)
+            self.points.append(p)
+
+    def update(self):
+        self.radius += 0.3
+        if self.radius > self.maxradius:
+            self.kill()
+        self.getPoints()
+
+
+    def draw(self, screen):
+        for x, y in self.points:
+            pygame.draw.rect(screen, self.color, (x, y, 2, 2))
+
+
+
 
 class Star():
     def __init__(self, x, y):
