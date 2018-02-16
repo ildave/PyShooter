@@ -152,9 +152,12 @@ class GameScene(Scene):
         for s in self.stars:
             y = s.y
             y = y + 1
+            x = s.x
             if y > 600:
                 y = 0
+                x = random.randint(0, 800)
             s.y = y
+            s.x = x
 
     def loadBackground(self):
         stars = []
