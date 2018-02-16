@@ -223,7 +223,7 @@ class GameScene(Scene):
         self.ship.update()
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
-        self.explosions.update()
+        self.explosions.update(self.elapsed)
 
     def spawnBullet(self):
         bullet = Bullet(self.ship)
@@ -415,11 +415,12 @@ class Explosion(pygame.sprite.Sprite):
         self.points = []
         for i in range(0, self.npoints):
             a = i / self.npoints  * math.pi * 2
-            p = (self.radius * math.sin(a) +  self.x, self.radius * math.cos(a) + self.y)
+            r = self.radius
+            p = (r * math.sin(a) +  self.x, r * math.cos(a) + self.y)
             self.points.append(p)
 
-    def update(self):
-        self.radius += 0.3
+    def update(self, elapsed):
+        self.radius += 0.05 * elapsed
         if self.radius > self.maxradius:
             self.kill()
         self.getPoints()
