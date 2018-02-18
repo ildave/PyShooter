@@ -20,10 +20,10 @@ class Ship(pygame.sprite.Sprite):
         self.pointC = (x + h/2, y - h)
     
     def update(self):
-        if self.horizontalSpeed > 3:
-            self.horizontalSpeed = 3
-        if self.horizontalSpeed < -3:
-            self.horizontalSpeed = -3
+        if self.horizontalSpeed > 5:
+            self.horizontalSpeed = 5
+        if self.horizontalSpeed < -5:
+            self.horizontalSpeed = -5
         self.rect.x += self.horizontalSpeed
         if self.rect.x < 0:
             self.rect.x = 0
