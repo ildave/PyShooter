@@ -261,3 +261,8 @@ __pycache__/
 *.pyc
 
 venv/
+bin/
+include/
+lib/
+pip-selfcheck.json
+pyenv.cfg
