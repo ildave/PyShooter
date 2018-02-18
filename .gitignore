@@ -265,4 +265,4 @@ bin/
 include/
 lib/
 pip-selfcheck.json
-pyenv.cfg
+pyvenv.cfg
