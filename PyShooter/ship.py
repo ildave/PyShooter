@@ -19,13 +19,11 @@ class Ship(pygame.sprite.Sprite):
         self.vspeed = 0.1
 
     def update(self, elapsed):
-        print(self.angle)
         self.y +=  math.sin(self.angle) * self.vspeed * elapsed 
         self.x += math.cos(self.angle) * self.hspeed * elapsed
 
         self.rect.x = self.x - self.radius
         self.rect.y = self.y - self.radius
-        print(self.x, self.y)
     
     def goLeft(self, elapsed):
         self.angle += self.angularspeed * elapsed
