@@ -25,8 +25,12 @@ class QuitScene(Scene):
         sw, sh = self.screen.get_size()
         self.xpos = sw / 2 - w / 2
         self.ypos = sh / 2 - h / 2
-        pygame.time.set_timer(pygame.USEREVENT, 2500)
+        self.timer = self.game.getTimer()
+        self.timer.duration = 2500
+        self.timer.action = self.endGame
 
+    def endGame(self):
+        self.game.done = True
     def runScene(self):
         self.elapsed = self.game.clock.tick(self.game.fps)
         self.screen.fill(pygame.color.THECOLORS['black'])
@@ -37,9 +41,6 @@ class QuitScene(Scene):
     def handleInput(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
-                self.game.done = True
-            if event.type == pygame.USEREVENT:
-                pygame.time.set_timer(pygame.USEREVENT, 0)
                 self.game.done = True
 
 class GameOverScene(Scene):
