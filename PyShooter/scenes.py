@@ -92,7 +92,7 @@ class TitleScene(Scene):
         wsmall, hsmall = self.smallfont.size(self.subtitleString)
         self.smallxpos = sw / 2 - wsmall / 2
         self.smallypos = sh / 2 - hsmall / 2 + h
-        self.movementString = "LEFT and RIGHT to move"
+        self.movementString = "LEFT and RIGHT to rotate"
         wmovement, hmovement = self.smallfont.size(self.movementString)
         self.movementxpos = sw / 2 - wmovement / 2
         self.movementypos = sh / 2 - hmovement / 2 + h + hsmall
