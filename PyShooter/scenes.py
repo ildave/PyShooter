@@ -144,13 +144,20 @@ class GameScene(Scene):
         self.explosions = pygame.sprite.Group()
 
         self.score = 0
-        self.counter = 0
         self.missed = 0
 
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
 
         self.stars = self.loadBackground()
+        
+        enemiesTimer = self.game.getRepeateTimer()
+        enemiesTimer.duration = 3000
+        enemiesTimer.action = self.spawnEnemy
+
+        firstEnemyTimer = self.game.getTimer()
+        firstEnemyTimer.duration = 1000
+        firstEnemyTimer.action = self.spawnEnemy
     
     def updateBackground(self):
         for s in self.stars:
@@ -175,14 +182,11 @@ class GameScene(Scene):
 
     def runScene(self):
         self.resetScreen()
-        if self.counter % 180 == 0:
-            self.spawnEnemy()
         self.elapsed = self.game.clock.tick(self.game.fps)
         self.handleInput()
         self.update()
         self.draw()
         self.checkHits()
-        self.counter = self.counter + 1
         if self.missed > 5:
             gameOverScene = GameOverScene(self.screen, self.game)
             self.game.scene = gameOverScene
