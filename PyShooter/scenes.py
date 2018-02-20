@@ -3,6 +3,7 @@ import sprites
 import random
 import ship
 import bullet
+import enemy
 
 class Scene():
     def __init__(self, screen, game):
@@ -190,8 +191,8 @@ class GameScene(Scene):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
     def spawnEnemy(self):
-        enemy = sprites.Enemy()
-        self.enemies.add(enemy)
+        e = enemy.Enemy()
+        self.enemies.add(e)
 
     def handleInput(self):
         for event in pygame.event.get():
