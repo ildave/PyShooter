@@ -170,8 +170,6 @@ class GameScene(Scene):
                 stars.append(s)
         return stars
 
-    
-
     def runScene(self):
         self.resetScreen()
         if self.counter % 180 == 0:
@@ -217,6 +215,9 @@ class GameScene(Scene):
         for enemy in hits:
             expl = sprites.Explosion(enemy)
             self.explosions.add(expl)
+            t = self.game.getTimer()
+            t.duration = 1500
+            t.action = expl.kill
 
     def update(self):
         self.updateBackground()

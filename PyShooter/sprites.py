@@ -125,7 +125,6 @@ class Explosion(pygame.sprite.Sprite):
         self.x = enemy.rect.x
         self.y = enemy.rect.y
         self.radius = enemy.radius / 2
-        self.maxradius = enemy.radius * 2
         self.npoints = 16
         self.points = []
         self.getPoints()
@@ -141,17 +140,12 @@ class Explosion(pygame.sprite.Sprite):
 
     def update(self, elapsed):
         self.radius += 0.05 * elapsed
-        if self.radius > self.maxradius:
-            self.kill()
         self.getPoints()
 
 
     def draw(self, screen):
         for x, y in self.points:
             pygame.draw.rect(screen, self.color, (x, y, 2, 2))
-
-
-
 
 class Star():
     def __init__(self, x, y):
