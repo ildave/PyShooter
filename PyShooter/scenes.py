@@ -1,6 +1,8 @@
 import pygame
 import sprites
 import random
+import ship
+import bullet
 
 class Scene():
     def __init__(self, screen, game):
@@ -135,7 +137,7 @@ class GameScene(Scene):
         self.resetScreen()
 
         self.elapsed = 0
-        self.ship = sprites.Ship(380, 590, 40, 40)
+        self.ship = ship.Ship(20, 380, 590)
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
@@ -199,15 +201,14 @@ class GameScene(Scene):
                 if event.key == pygame.K_q:
                     quitScene = QuitScene(self.screen, self.game)
                     self.game.scene = quitScene
-                if event.key == pygame.K_LEFT:
-                    self.ship.goLeft(self.elapsed)
-                if event.key == pygame.K_RIGHT:
-                    self.ship.goRight(self.elapsed)
                 if event.key == pygame.K_SPACE:
                     self.spawnBullet()
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    self.ship.stop()
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.ship.goLeft(self.elapsed)
+        if keys[pygame.K_RIGHT]:
+            self.ship.goRight(self.elapsed)
+
     
     def checkHits(self):
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
@@ -221,14 +222,14 @@ class GameScene(Scene):
 
     def update(self):
         self.updateBackground()
-        self.ship.update()
+        self.ship.update(self.elapsed)
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
         self.explosions.update(self.elapsed)
 
     def spawnBullet(self):
-        bullet = sprites.Bullet(self.ship)
-        self.bullets.add(bullet)
+        b = bullet.Bullet(self.ship)
+        self.bullets.add(b)
 
     def drawScore(self):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
