@@ -2,8 +2,9 @@ import pygame
 import math
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, ship):
+    def __init__(self, ship, game):
         super().__init__()
+        self.game = game
         self.length = 5
         self.x = int(ship.x + 2 * ship.radius * math.cos(ship.angle))
         self.y = int(ship.y + 2 * ship.radius * math.sin(ship.angle))
@@ -24,7 +25,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x = self.x - self.length
         self.rect.y = self.y - self.length
         
-        if self.x < 0 or self.y < 0 or self.x > 800 or self.y > 600:
+        if self.x < 0 or self.y < 0 or self.x > self.game.width or self.y > self.game.height:
             self.kill()
 
     def draw(self, screen):

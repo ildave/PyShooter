@@ -165,17 +165,17 @@ class GameScene(Scene):
             y = s.y
             y = y + 1
             x = s.x
-            if y > 600:
+            if y > self.game.height:
                 y = 0
-                x = random.randint(0, 800)
+                x = random.randint(0, self.game.width)
             s.y = y
             s.x = x
 
     def loadBackground(self):
         stars = []
-        for i in range(0, 600, 10):
+        for i in range(0, self.game.height, 10):
             for j in range (0, 5):
-                x = random.randint(0, 800)
+                x = random.randint(0, self.game.width)
                 y = random.randint(i, i + 10)
                 s = sprites.Star(x, y)
                 stars.append(s)
@@ -196,7 +196,7 @@ class GameScene(Scene):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
     def spawnEnemy(self):
-        e = enemy.Enemy()
+        e = enemy.Enemy(self.game)
         self.enemies.add(e)
 
     def handleInput(self):
@@ -234,19 +234,19 @@ class GameScene(Scene):
         self.explosions.update(self.elapsed)
 
     def spawnBullet(self):
-        b = bullet.Bullet(self.ship)
+        b = bullet.Bullet(self.ship, self.game)
         self.bullets.add(b)
 
     def drawScore(self):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
-        self.screen.blit(textsurface, (10, 598))
+        self.screen.blit(textsurface, (10, self.game.height - 30 - 2))
 
     def drawMissed(self):
         missedString = "Missed: " + str(self.missed)
         w, h = self.font.size(missedString)
         textsurface = self.font.render(missedString, False, pygame.color.THECOLORS['white'])
-        x = 800 - w
-        self.screen.blit(textsurface, (x, 598))
+        x = self.game.width - w
+        self.screen.blit(textsurface, (x, self.game.height - 30 - 2))
 
     def draw(self):
         caption = "FPS: {:.2f}".format(self.game.clock.get_fps())
@@ -261,7 +261,7 @@ class GameScene(Scene):
             e.draw(self.screen)
         self.drawScore()
         self.drawMissed()
-        pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, 600), (800, 600))
+        pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, self.game.height - 30), (self.game.width, self.game.height - 30))
         pygame.display.flip()
 
     def drawBackground(self):
