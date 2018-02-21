@@ -3,10 +3,15 @@ import scenes
 import timer
 
 class Game():
-    def __init__(self):
+    def __init__(self, width, height, fullscreen=True):
         pygame.init()
+        self.height = height
+        self.width = width
         self.name = "PyShooter"
-        self.screen = pygame.display.set_mode((800, 630))
+        if fullscreen:
+            self.screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.done = False
