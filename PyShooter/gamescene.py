@@ -8,6 +8,7 @@ import random
 import enemy
 import bullet
 import math
+import bonus
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -20,6 +21,7 @@ class GameScene(scenes.Scene):
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
+        self.bonuses = pygame.sprite.Group()
 
         self.score = 0
         self.energy = 100
@@ -126,16 +128,18 @@ class GameScene(scenes.Scene):
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-        collisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
-        for enemy in collisions:
+            b = bonus.Bonus(self.game, enemy)
+            self.bonuses.add(b)
+        enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
+        for enemy in enemyCollisions:
             self.energy = self.energy - enemy.radius 
             expl = sprites.Explosion(enemy)
             self.explosions.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-        
-
+        bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
+        self.score += len(bonusCollisions)
 
     def update(self):
         self.updateBackground()
@@ -143,6 +147,7 @@ class GameScene(scenes.Scene):
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
         self.explosions.update(self.elapsed)
+        self.bonuses.update(self.elapsed)
 
     def spawnBullet(self):
         b = bullet.Bullet(self.ship, self.game, 0)
@@ -167,15 +172,20 @@ class GameScene(scenes.Scene):
         caption = "FPS: {:.2f}".format(self.game.clock.get_fps())
         pygame.display.set_caption(caption)
         self.drawBackground()
-        self.ship.draw(self.screen)
+        
+        for b in self.bonuses:
+            b.draw(self.screen)
         for e in self.enemies:
             e.draw(self.screen)
         for b in self.bullets:
             b.draw(self.screen)
         for e in self.explosions:
             e.draw(self.screen)
+        self.ship.draw(self.screen)
+
         self.drawScore()
         self.drawStats()
+
         pygame.display.flip()
 
     def drawBackground(self):
