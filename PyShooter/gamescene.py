@@ -123,7 +123,7 @@ class GameScene(scenes.Scene):
         hitEnemies = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         self.score += len(hitEnemies)
         for enemy in hitEnemies:
-            expl = sprites.Explosion(enemy)
+            expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
             self.explosions.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
@@ -133,13 +133,19 @@ class GameScene(scenes.Scene):
         enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
         for enemy in enemyCollisions:
             self.energy = self.energy - enemy.radius 
-            expl = sprites.Explosion(enemy)
+            expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
             self.explosions.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
         bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
         self.score += len(bonusCollisions)
+        for b in bonusCollisions:
+            expl = sprites.Explosion(b.rect.x, b.rect.y)
+            self.explosions.add(expl)
+            t = self.game.getTimer()
+            t.duration = 500
+            t.action = expl.kill
 
     def update(self):
         self.updateBackground()

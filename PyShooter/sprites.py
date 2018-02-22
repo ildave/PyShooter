@@ -3,11 +3,11 @@ import random
 import math
 
 class Explosion(pygame.sprite.Sprite):
-    def __init__(self, enemy):
+    def __init__(self, x, y):
         super().__init__()
-        self.x = enemy.rect.x
-        self.y = enemy.rect.y
-        self.radius = enemy.radius / 2
+        self.x = x
+        self.y = y
+        self.radius = random.randint(9, 20) / 2
         self.npoints = 16
         self.points = []
         self.getPoints()
