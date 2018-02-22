@@ -15,8 +15,8 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = self.x - self.radius
         self.rect.y = self.y - self.radius
         self.color = pygame.color.THECOLORS['yellow']
-        self.hspeed = 0.1
-        self.vspeed = 0.1
+        self.hspeed = 0.15
+        self.vspeed = 0.15
 
     def update(self, elapsed):
         self.y +=  math.sin(self.angle) * self.vspeed * elapsed 
