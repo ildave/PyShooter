@@ -7,7 +7,7 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.game = game
         self.radius = random.randint(9, 20)
-        self.image = pygame.Surface([self.radius, self.radius])
+        self.image = pygame.Surface([self.radius * 2, self.radius * 2])
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, self.game.width - self.radius)
         self.startX = self.rect.x
