@@ -22,7 +22,7 @@ class GameScene(scenes.Scene):
         self.explosions = pygame.sprite.Group()
 
         self.score = 0
-        self.missed = 0
+        self.energy = 100
 
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
@@ -36,6 +36,15 @@ class GameScene(scenes.Scene):
         firstEnemyTimer = self.game.getTimer()
         firstEnemyTimer.duration = 1000
         firstEnemyTimer.action = self.spawnEnemy
+
+        energyTimer = self.game.getRepeateTimer()
+        energyTimer.duration = 5000
+        energyTimer.action = self.restoreEnergy
+
+    def restoreEnergy(self):
+        self.energy += 10
+        if self.energy > 100:
+            self.energy = 100
     
     def updateBackground(self):
         for s in self.stars:
@@ -65,7 +74,7 @@ class GameScene(scenes.Scene):
         self.update()
         self.draw()
         self.checkHits()
-        if self.missed > 5:
+        if self.energy <= 0:
             gameOverScene = gameoverscene.GameOverScene(self.screen, self.game)
             self.game.scene = gameOverScene
     
@@ -94,14 +103,24 @@ class GameScene(scenes.Scene):
 
     
     def checkHits(self):
-        hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
-        self.score += len(hits)
-        for enemy in hits:
+        hitEnemies = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
+        self.score += len(hitEnemies)
+        for enemy in hitEnemies:
             expl = sprites.Explosion(enemy)
             self.explosions.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
+        collisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
+        for enemy in collisions:
+            self.energy = self.energy - enemy.radius
+            expl = sprites.Explosion(enemy)
+            self.explosions.add(expl)
+            t = self.game.getTimer()
+            t.duration = 1500
+            t.action = expl.kill
+        
+
 
     def update(self):
         self.updateBackground()
@@ -122,10 +141,10 @@ class GameScene(scenes.Scene):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
         self.screen.blit(textsurface, (10, self.game.height - 30 - 2))
 
-    def drawMissed(self):
-        missedString = "Missed: " + str(self.missed)
-        w, h = self.font.size(missedString)
-        textsurface = self.font.render(missedString, False, pygame.color.THECOLORS['white'])
+    def drawEnergy(self):
+        energyString = "Energy: " + str(self.energy)
+        w, h = self.font.size(energyString)
+        textsurface = self.font.render(energyString, False, pygame.color.THECOLORS['white'])
         x = self.game.width - w
         self.screen.blit(textsurface, (x, self.game.height - 30 - 2))
 
@@ -141,7 +160,7 @@ class GameScene(scenes.Scene):
         for e in self.explosions:
             e.draw(self.screen)
         self.drawScore()
-        self.drawMissed()
+        self.drawEnergy()
         pygame.display.flip()
 
     def drawBackground(self):
