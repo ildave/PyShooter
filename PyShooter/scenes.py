@@ -139,7 +139,7 @@ class GameScene(Scene):
         self.resetScreen()
 
         self.elapsed = 0
-        self.ship = ship.Ship(20, 380, 590)
+        self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
