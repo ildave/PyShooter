@@ -42,14 +42,12 @@ class Enemy(pygame.sprite.Sprite):
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (self.rect.x + self.radius, self.rect.y +  self.radius), self.radius)
-        pygame.draw.rect(screen, self.color, self.rect, 1)
 
     def update(self, elapsed, gameScene):
         self.y +=  math.sin(self.angle) * self.vspeed * elapsed 
         self.x += math.cos(self.angle) * self.hspeed * elapsed
         self.rect.x = self.x
         self.rect.y = self.y
-        print(self.x, self.y, self.active, self.inGame())
         if not self.active and not self.inGame():
             pass
         if not self.active and self.inGame():
