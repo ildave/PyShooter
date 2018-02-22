@@ -30,7 +30,7 @@ class GameScene(scenes.Scene):
         self.stars = self.loadBackground()
         
         enemiesTimer = self.game.getRepeateTimer()
-        enemiesTimer.duration = 3000
+        enemiesTimer.duration = 1000
         enemiesTimer.action = self.spawnEnemy
 
         firstEnemyTimer = self.game.getTimer()
