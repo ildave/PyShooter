@@ -23,6 +23,7 @@ class GameScene(scenes.Scene):
 
         self.score = 0
         self.energy = 100
+        self.boost = 50
 
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 30)
@@ -41,8 +42,17 @@ class GameScene(scenes.Scene):
         energyTimer.duration = 5000
         energyTimer.action = self.restoreEnergy
 
+        boostTimer = self.game.getRepeateTimer()
+        boostTimer.duration = 100
+        boostTimer.action = self.restoreBoost
+
+    def restoreBoost(self):
+        self.boost += 1
+        if self.boost > 50:
+            self.boost = 50
+
     def restoreEnergy(self):
-        self.energy += 10
+        self.energy += 5
         if self.energy > 100:
             self.energy = 100
     
@@ -95,11 +105,16 @@ class GameScene(scenes.Scene):
                     self.game.scene = quitScene
                 if event.key == pygame.K_SPACE:
                     self.spawnBullet()
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    self.ship.stopBoost()
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.ship.goLeft(self.elapsed)
         if keys[pygame.K_RIGHT]:
             self.ship.goRight(self.elapsed)
+        if keys[pygame.K_UP]:
+            self.ship.startBoost(self)
 
     
     def checkHits(self):
@@ -113,7 +128,7 @@ class GameScene(scenes.Scene):
             t.action = expl.kill
         collisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
         for enemy in collisions:
-            self.energy = self.energy - enemy.radius
+            self.energy = self.energy - enemy.radius 
             expl = sprites.Explosion(enemy)
             self.explosions.add(expl)
             t = self.game.getTimer()
@@ -141,10 +156,10 @@ class GameScene(scenes.Scene):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
         self.screen.blit(textsurface, (10, self.game.height - 30 - 2))
 
-    def drawEnergy(self):
-        energyString = "Energy: " + str(self.energy)
-        w, h = self.font.size(energyString)
-        textsurface = self.font.render(energyString, False, pygame.color.THECOLORS['white'])
+    def drawStats(self):
+        statsString = "Energy: {} Boost: {}".format(self.energy, self.boost)
+        w, h = self.font.size(statsString)
+        textsurface = self.font.render(statsString, False, pygame.color.THECOLORS['white'])
         x = self.game.width - w
         self.screen.blit(textsurface, (x, self.game.height - 30 - 2))
 
@@ -160,7 +175,7 @@ class GameScene(scenes.Scene):
         for e in self.explosions:
             e.draw(self.screen)
         self.drawScore()
-        self.drawEnergy()
+        self.drawStats()
         pygame.display.flip()
 
     def drawBackground(self):

@@ -17,10 +17,23 @@ class Ship(pygame.sprite.Sprite):
         self.color = pygame.color.THECOLORS['yellow']
         self.hspeed = 0.15
         self.vspeed = 0.15
+        self.boost = 1
+
+    def startBoost(self, gamescene):
+        if gamescene.boost > 0:
+            gamescene.boost = gamescene.boost - 1
+            self.boost = 2
+            self.color = pygame.color.THECOLORS['orange']
+        else:
+            self.stopBoost()
+
+    def stopBoost(self):
+        self.boost = 1
+        self.color = pygame.color.THECOLORS['yellow']
 
     def update(self, elapsed):
-        self.y +=  math.sin(self.angle) * self.vspeed * elapsed 
-        self.x += math.cos(self.angle) * self.hspeed * elapsed
+        self.y += math.sin(self.angle) * self.vspeed * self.boost * elapsed 
+        self.x += math.cos(self.angle) * self.hspeed * self.boost * elapsed
 
         self.rect.x = self.x - self.radius
         self.rect.y = self.y - self.radius
