@@ -2,11 +2,11 @@ import pygame
 import math
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, ship, game):
+    def __init__(self, ship, game, degreesOffset, length=5):
         super().__init__()
         self.game = game
-        self.length = 5
-        self.angle = ship.angle
+        self.length = length
+        self.angle = ship.angle + degreesOffset
         self.bx = int(ship.x + 2 * ship.radius * math.cos(self.angle))
         self.by = int(ship.y + 2 * ship.radius * math.sin(self.angle))
         self.ex = int(self.bx + 2 * self.length * math.cos(self.angle))
