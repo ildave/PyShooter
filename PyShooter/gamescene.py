@@ -142,7 +142,6 @@ class GameScene(scenes.Scene):
             e.draw(self.screen)
         self.drawScore()
         self.drawMissed()
-        pygame.draw.line(self.screen, pygame.color.THECOLORS['white'], (0, self.game.height - 30), (self.game.width, self.game.height - 30))
         pygame.display.flip()
 
     def drawBackground(self):
