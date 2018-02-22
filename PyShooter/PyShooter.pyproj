@@ -26,11 +26,23 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game.py" />
+    <Compile Include="gameoverscene.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gamescene.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="quitscene.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PyShooter.py" />
     <Compile Include="scenes.py" />
     <Compile Include="ship.py" />
     <Compile Include="sprites.py" />
     <Compile Include="timer.py" />
+    <Compile Include="titlescene.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
