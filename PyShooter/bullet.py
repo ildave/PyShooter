@@ -7,30 +7,30 @@ class Bullet(pygame.sprite.Sprite):
         self.game = game
         self.length = length
         self.angle = ship.angle + degreesOffset
-        self.bx = int(ship.x + 2 * ship.radius * math.cos(self.angle))
-        self.by = int(ship.y + 2 * ship.radius * math.sin(self.angle))
-        self.ex = int(self.bx + 2 * self.length * math.cos(self.angle))
-        self.ey = int(self.by + 2 * self.length * math.sin(self.angle))
+        self.radius = 3
         
-        self.image = pygame.Surface([1, 1])
+        sx, sy = ship.points[1]
+        self.x = sx
+        self.y = sy
+
+        self.image = pygame.Surface([self.radius * 2, self.radius * 2])
         self.rect = self.image.get_rect()
-        self.rect.x = self.ex
-        self.rect.y = self.ey
+        self.rect.x = self.x
+        self.rect.y = self.y
         self.color = pygame.color.THECOLORS['cyan']
-        self.hspeed = 0.2
-        self.vspeed = 0.2
+        self.hspeed = 0.25
+        self.vspeed = 0.25
 
-    def update(self, elapsed):
-        self.by += math.sin(self.angle) * self.vspeed * elapsed 
-        self.bx += math.cos(self.angle) * self.hspeed * elapsed
-        self.ex = int(self.bx + 2 * self.length * math.cos(self.angle))
-        self.ey = int(self.by + 2 * self.length * math.sin(self.angle))
+    def update(self, elapsed): 
+        self.x += math.sin(self.angle) * self.vspeed * elapsed 
+        self.y += -math.cos(self.angle) * self.hspeed * elapsed
 
-        self.rect.x = self.ex
-        self.rect.y = self.ey
+        self.rect.x = self.x
+        self.rect.y = self.y
         
-        if self.bx < 0 or self.by < 0 or self.bx > self.game.width or self.by > self.game.height:
+        if self.x < 0 or self.y < 0 or self.x > self.game.width or self.y > self.game.height:
             self.kill()
 
+
     def draw(self, screen):
-        pygame.draw.line(screen, self.color, (int(self.bx), int(self.by)), (int(self.ex), int(self.ey)))
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
