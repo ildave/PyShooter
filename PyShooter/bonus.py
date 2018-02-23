@@ -3,20 +3,20 @@ import random
 import math
 
 class Bonus(pygame.sprite.Sprite):
-    def __init__(self, game, enemy):
+    def __init__(self, game, x, y, angle, scene):
         super().__init__()
         self.game = game
-        self.enemy = enemy
+        self.scene = scene
         self.size = 10
-        self.x = self.enemy.x - self.size / 2
-        self.y = self.enemy.y - self.size / 2
+        self.x = x - self.size / 2
+        self.y = y - self.size / 2
         self.image = pygame.Surface([1, 1])
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
         self.vspeed = random.uniform(0.02, 0.06)
         self.hspeed = random.uniform(0.02, 0.06)
-        self.angle = enemy.angle
+        self.angle = angle
         self.rotationAngle = random.uniform(0, math.pi / 2)
         angleoffset = random.uniform(0, math.pi / 6) - math.pi / 12
         self.angle += angleoffset
@@ -35,6 +35,9 @@ class Bonus(pygame.sprite.Sprite):
             newPoints.append((newx, newy))
 
         return newPoints
+
+    def effect(self):
+        self.scene.score += 1
 
     def update(self, elapsed):
         self.rotationAngle += -0.01*math.pi
@@ -55,4 +58,3 @@ class Bonus(pygame.sprite.Sprite):
 
     def draw(self, screen):
         pygame.draw.polygon(screen, self.color, self.points, 1)
-        #pygame.draw.rect(screen, pygame.color.THECOLORS['white'], self.rect, 1)

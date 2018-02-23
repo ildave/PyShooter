@@ -11,6 +11,7 @@ import math
 import bonus
 import simpleweapon
 import tripleweapon
+import tripleweaponbonus
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -50,6 +51,10 @@ class GameScene(scenes.Scene):
         boostTimer = self.game.getRepeateTimer()
         boostTimer.duration = 100
         boostTimer.action = self.restoreBoost
+
+        bonusTimer = self.game.getTimer()
+        bonusTimer.duration = 10000
+        bonusTimer.action = self.spawnBonus
 
     def restoreBoost(self):
         self.boost += 1
@@ -100,6 +105,19 @@ class GameScene(scenes.Scene):
         e = enemy.Enemy(self.game)
         self.enemies.add(e)
 
+    def spawnBonus(self):
+        x = random.randint(0, self.game.width)
+        y = random.randint(0, self.game.height)
+        angle = random.uniform(0, math.pi)
+        b = tripleweaponbonus.TripleWeaponBonus(self.game, x, y, angle, self)
+        self.bonuses.add(b)
+        t = self.game.getTimer()
+        t.duration = b.duration
+        t.action = self.setSimpleWeapon
+
+    def setSimpleWeapon(self):
+        self.ship.weapon = simpleweapon.SimpleWeapon(self.game, self.ship, self)
+
     def handleInput(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
@@ -131,7 +149,7 @@ class GameScene(scenes.Scene):
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-            b = bonus.Bonus(self.game, enemy)
+            b = bonus.Bonus(self.game, enemy.x, enemy.y, enemy.angle, self)
             self.bonuses.add(b)
         enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
         for enemy in enemyCollisions:
@@ -146,8 +164,8 @@ class GameScene(scenes.Scene):
             tpain.action = self.ship.stopPain
             self.ship.startPain()
         bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
-        self.score += len(bonusCollisions)
         for b in bonusCollisions:
+            b.effect()
             expl = sprites.Explosion(b.rect.x, b.rect.y)
             self.explosions.add(expl)
             expl.color = pygame.color.THECOLORS['red']
