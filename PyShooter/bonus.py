@@ -21,7 +21,7 @@ class Bonus(pygame.sprite.Sprite):
         angleoffset = random.uniform(0, math.pi / 6) - math.pi / 12
         self.angle += angleoffset
 
-        self.points = ((0, 0), (10, 0), (10, 10), (0, 10))
+        self.originalpoints = ((0, 0), (10, 0), (10, 10), (0, 10))
         self.points = self.rotate()
         self.points = [(a + self.x, b + self.y) for a, b in self.points]
 
@@ -29,7 +29,7 @@ class Bonus(pygame.sprite.Sprite):
 
     def rotate(self):
         newPoints = []
-        for x, y in self.points:
+        for x, y in self.originalpoints:
             newx = x * math.cos(self.rotationAngle) + y * math.sin(self.rotationAngle)
             newy = -x * math.sin(self.rotationAngle) + y * math.cos(self.rotationAngle)
             newPoints.append((newx, newy))
@@ -46,7 +46,6 @@ class Bonus(pygame.sprite.Sprite):
         self.rect.x = self.x + self.size / 2
         self.rect.y = self.y + self.size / 2
 
-        self.points = ((0, 0), (10, 0), (10, 10), (0, 10))
         self.points = self.rotate()
         self.points = [(a + self.x, b + self.y) for a, b in self.points]
 

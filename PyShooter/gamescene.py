@@ -106,14 +106,11 @@ class GameScene(scenes.Scene):
         self.enemies.add(e)
 
     def spawnBonus(self):
-        x = random.randint(0, self.game.width)
-        y = random.randint(0, self.game.height)
+        x = random.randint(100, self.game.width - 100)
+        y = random.randint(100, self.game.height - 100)
         angle = random.uniform(0, math.pi)
         b = tripleweaponbonus.TripleWeaponBonus(self.game, x, y, angle, self)
         self.bonuses.add(b)
-        t = self.game.getTimer()
-        t.duration = b.duration
-        t.action = self.setSimpleWeapon
 
     def setSimpleWeapon(self):
         self.ship.weapon = simpleweapon.SimpleWeapon(self.game, self.ship, self)
