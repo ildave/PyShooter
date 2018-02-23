@@ -23,6 +23,8 @@ class Ship(pygame.sprite.Sprite):
         self.rotate()
         self.translate()
 
+        self.weapon = None
+
     def translate(self):
        self.points = [(a + self.x, b + self.y) for a, b in self.points]
 

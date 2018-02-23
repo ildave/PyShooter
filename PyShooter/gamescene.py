@@ -9,6 +9,8 @@ import enemy
 import bullet
 import math
 import bonus
+import simpleweapon
+import tripleweapon
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -18,6 +20,7 @@ class GameScene(scenes.Scene):
 
         self.elapsed = 0
         self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
+        self.ship.weapon = simpleweapon.SimpleWeapon(self.game, self.ship, self)
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
@@ -143,6 +146,8 @@ class GameScene(scenes.Scene):
         for b in bonusCollisions:
             expl = sprites.Explosion(b.rect.x, b.rect.y)
             self.explosions.add(expl)
+            expl.color = pygame.color.THECOLORS['red']
+            expl.radius = 2
             t = self.game.getTimer()
             t.duration = 500
             t.action = expl.kill
@@ -156,12 +161,7 @@ class GameScene(scenes.Scene):
         self.bonuses.update(self.elapsed)
 
     def spawnBullet(self):
-        b = bullet.Bullet(self.ship, self.game, 0)
-        self.bullets.add(b)
-        b = bullet.Bullet(self.ship, self.game, math.pi / 6, 10)
-        self.bullets.add(b)
-        b = bullet.Bullet(self.ship, self.game, -math.pi / 6, 10)
-        self.bullets.add(b)
+       self.ship.weapon.shoot()
 
     def drawScore(self):
         textsurface = self.font.render('Score: ' + str(self.score), False, pygame.color.THECOLORS['white'])
