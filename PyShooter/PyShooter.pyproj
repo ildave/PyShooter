@@ -41,9 +41,21 @@
     <Compile Include="PyShooter.py" />
     <Compile Include="scenes.py" />
     <Compile Include="ship.py" />
+    <Compile Include="simpleweapon.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="sprites.py" />
     <Compile Include="timer.py" />
     <Compile Include="titlescene.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tripleweapon.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tripleweaponbonus.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="weapon.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
