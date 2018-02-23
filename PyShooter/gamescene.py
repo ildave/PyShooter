@@ -141,6 +141,10 @@ class GameScene(scenes.Scene):
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
+            tpain = self.game.getTimer()
+            tpain.duration = 700
+            tpain.action = self.ship.stopPain
+            self.ship.startPain()
         bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
         self.score += len(bonusCollisions)
         for b in bonusCollisions:

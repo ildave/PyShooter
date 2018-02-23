@@ -22,6 +22,7 @@ class Ship(pygame.sprite.Sprite):
         self.points = self.originalpoints
         self.rotate()
         self.translate()
+        self.pain = False
 
         self.weapon = None
 
@@ -36,6 +37,14 @@ class Ship(pygame.sprite.Sprite):
             newPoints.append((newx, newy))
 
         self.points = newPoints
+
+    def startPain(self):
+        self.color = pygame.color.THECOLORS['grey']
+        self.pain = True
+
+    def stopPain(self):
+        self.color = pygame.color.THECOLORS['yellow']
+        self.pain = False
 
     def startBoost(self, gamescene):
         if gamescene.boost > 0:
