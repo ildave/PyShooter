@@ -20,14 +20,18 @@ class TitleScene(scenes.Scene):
         wmovement, hmovement = self.smallfont.size(self.movementString)
         self.movementxpos = sw / 2 - wmovement / 2
         self.movementypos = sh / 2 - hmovement / 2 + h + hsmall
+        self.boostString = "UP to boost"
+        wboost, hboost = self.smallfont.size(self.boostString)
+        self.boostxpos = sw / 2 - wboost / 2
+        self.boostypos = sh / 2 - hboost / 2 + h + hsmall + hmovement
         self.shootString = "SPACE to shoot"
         wshoot, hshoot = self.smallfont.size(self.shootString)
         self.shootxpos = sw / 2 - wshoot / 2
-        self.shootypos = sh / 2 - hshoot / 2 + h + hsmall + hmovement
+        self.shootypos = sh / 2 - hshoot / 2 + h + hsmall + hmovement + hboost
         self.quitString = "Q to quit"
         wquit, hquit = self.smallfont.size(self.quitString)
         self.quitxpos = sw / 2 - wquit / 2
-        self.quitypos = sh / 2 - hquit / 2 + h + hsmall + hmovement + hshoot
+        self.quitypos = sh / 2 - hquit / 2 + h + hsmall + hmovement + hboost + hshoot 
 
     def runScene(self):
         self.elapsed = self.game.clock.tick(self.game.fps)
@@ -37,6 +41,8 @@ class TitleScene(scenes.Scene):
         self.screen.blit(smalltestsurface, (self.smallxpos, self.smallypos))
         movementsurface = self.smallfont.render(self.movementString, False, pygame.color.THECOLORS['white'])
         self.screen.blit(movementsurface, (self.movementxpos, self.movementypos))
+        boostsurface = self.smallfont.render(self.boostString, False, pygame.color.THECOLORS['white'])
+        self.screen.blit(boostsurface, (self.boostxpos, self.boostypos))
         shootsurface = self.smallfont.render(self.shootString, False, pygame.color.THECOLORS['white'])
         self.screen.blit(shootsurface, (self.shootxpos, self.shootypos))
         quitsurface = self.smallfont.render(self.quitString, False, pygame.color.THECOLORS['white'])
