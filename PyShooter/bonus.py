@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+import texteffect
 
 class Bonus(pygame.sprite.Sprite):
     def __init__(self, game, x, y, angle, scene):
@@ -38,6 +39,10 @@ class Bonus(pygame.sprite.Sprite):
 
     def effect(self):
         self.scene.score += 1
+
+    def getVisualEffect(self):
+        e = texteffect.TextEffect("+1", self.game)
+        return e
 
     def update(self, elapsed):
         self.rotationAngle += -0.01*math.pi

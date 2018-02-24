@@ -10,6 +10,7 @@ import bullet
 import math
 import bonus
 import armory
+import tripleweaponbonus
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -163,6 +164,8 @@ class GameScene(scenes.Scene):
         bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
         for b in bonusCollisions:
             b.effect()
+            ve = b.getVisualEffect()
+            self.effects.add(ve)
             expl = sprites.Explosion(b.rect.x, b.rect.y)
             self.effects.add(expl)
             expl.color = pygame.color.THECOLORS['red']
