@@ -9,8 +9,6 @@ import enemy
 import bullet
 import math
 import bonus
-import tripleweapon
-import tripleweaponbonus
 import armory
 
 class GameScene(scenes.Scene):
