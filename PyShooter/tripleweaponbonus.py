@@ -1,6 +1,7 @@
 import pygame
 import bonus
 import math
+import texteffect
 
 class TripleWeaponBonus(bonus.Bonus):
     def __init__(self, game, x, y, angle, scene):
@@ -18,3 +19,7 @@ class TripleWeaponBonus(bonus.Bonus):
         t = self.game.getTimer()
         t.duration = self.duration
         t.action = self.scene.setSimpleWeapon
+
+    def getVisualEffect(self):
+        e = texteffect.TextEffect("Triple shoot!", self.game)
+        return e
