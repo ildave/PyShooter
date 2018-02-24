@@ -5,17 +5,17 @@ class TextEffect(pygame.sprite.Sprite):
         super().__init__()
         self.text = text
         self.game = game
-        self.fontsize = 100
+        self.fontsize = 150
         self.font = pygame.font.SysFont('Arial', self.fontsize)
         self.w, self.h = self.font.size(self.text)
         self.xpos = self.game.width / 2 - self.w / 2
         self.ypos = self.game.height / 2 - self.h / 2
-        self.alpha = 255
+        self.alpha = 128
 
     def update(self, elapsed):
-        self.fontsize += 1
+        self.fontsize += 4
         if self.fontsize > 200:
-            self.alpha -= 1
+            self.alpha -= 4
         self.font = pygame.font.SysFont('Arial', self.fontsize)
         self.w, self.h = self.font.size(self.text)
         self.xpos = self.game.width / 2 - self.w / 2
