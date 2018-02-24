@@ -1,6 +1,6 @@
 import simpleweapon
 import tripleweapon
-
+import crossweapon
 class Armory():
     def __init__(self, game, ship, scene):
         self.game = game
@@ -12,3 +12,6 @@ class Armory():
 
     def getTripleWeapon(self):
         return tripleweapon.TripleWeapon(self.game, self.ship, self.scene)
+
+    def getCrossWeapon(self):
+        return crossweapon.CrossWeapon(self.game, self.ship, self.scene)
