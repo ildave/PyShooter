@@ -9,9 +9,9 @@ import enemy
 import bullet
 import math
 import bonus
-import simpleweapon
 import tripleweapon
 import tripleweaponbonus
+import armory
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -21,7 +21,9 @@ class GameScene(scenes.Scene):
 
         self.elapsed = 0
         self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
-        self.ship.weapon = simpleweapon.SimpleWeapon(self.game, self.ship, self)
+        self.weaponarmory = armory.Armory(self.game, self.ship, self)
+        self.ship.weapon = self.weaponarmory.getSimpleWeapon()
+
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
@@ -113,7 +115,7 @@ class GameScene(scenes.Scene):
         self.bonuses.add(b)
 
     def setSimpleWeapon(self):
-        self.ship.weapon = simpleweapon.SimpleWeapon(self.game, self.ship, self)
+        self.ship.weapon = self.weaponarmory.getSimpleWeapon()
 
     def handleInput(self):
         for event in pygame.event.get():

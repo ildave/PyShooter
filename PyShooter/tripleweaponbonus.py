@@ -1,5 +1,4 @@
 import pygame
-import tripleweapon
 import bonus
 import math
 
@@ -14,7 +13,7 @@ class TripleWeaponBonus(bonus.Bonus):
         self.points = [(a + self.x, b + self.y) for a, b in self.points]
 
     def effect(self):
-        tw = tripleweapon.TripleWeapon(self.game, self.scene.ship, self.scene)
+        tw = self.scene.weaponarmory.getTripleWeapon()
         self.scene.ship.weapon = tw
         t = self.game.getTimer()
         t.duration = self.duration
