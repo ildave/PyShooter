@@ -26,7 +26,7 @@ class GameScene(scenes.Scene):
 
         self.enemies = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
-        self.explosions = pygame.sprite.Group()
+        self.effects = pygame.sprite.Group() #contains explosions and other effects
         self.bonuses = pygame.sprite.Group()
 
         self.score = 0
@@ -144,7 +144,7 @@ class GameScene(scenes.Scene):
         self.score += len(hitEnemies)
         for enemy in hitEnemies:
             expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
-            self.explosions.add(expl)
+            self.effects.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
@@ -154,7 +154,7 @@ class GameScene(scenes.Scene):
         for enemy in enemyCollisions:
             self.energy = self.energy - enemy.radius 
             expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
-            self.explosions.add(expl)
+            self.effects.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
@@ -166,7 +166,7 @@ class GameScene(scenes.Scene):
         for b in bonusCollisions:
             b.effect()
             expl = sprites.Explosion(b.rect.x, b.rect.y)
-            self.explosions.add(expl)
+            self.effects.add(expl)
             expl.color = pygame.color.THECOLORS['red']
             expl.radius = 2
             t = self.game.getTimer()
@@ -178,7 +178,7 @@ class GameScene(scenes.Scene):
         self.ship.update(self.elapsed)
         self.enemies.update(self.elapsed, self)
         self.bullets.update(self.elapsed)
-        self.explosions.update(self.elapsed)
+        self.effects.update(self.elapsed)
         self.bonuses.update(self.elapsed)
 
     def spawnBullet(self):
@@ -206,7 +206,7 @@ class GameScene(scenes.Scene):
             e.draw(self.screen)
         for b in self.bullets:
             b.draw(self.screen)
-        for e in self.explosions:
+        for e in self.effects:
             e.draw(self.screen)
         self.ship.draw(self.screen)
 
