@@ -108,7 +108,8 @@ class GameScene(scenes.Scene):
         self.enemies.add(e)
 
     def spawnBonus(self):
-        b = self.bonusman.getRandomBonus()
+        #b = self.bonusman.getRandomBonus()
+        b = self.bonusman.getShieldBonus()
         self.bonuses.add(b)
 
     def setSimpleWeapon(self):
@@ -149,16 +150,17 @@ class GameScene(scenes.Scene):
             self.bonuses.add(b)
         enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
         for enemy in enemyCollisions:
-            self.energy = self.energy - enemy.radius 
+            if not self.ship.shield:
+                self.energy = self.energy - enemy.radius 
+                tpain = self.game.getTimer()
+                tpain.duration = 700
+                tpain.action = self.ship.stopPain
+                self.ship.startPain()
             expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
             self.effects.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-            tpain = self.game.getTimer()
-            tpain.duration = 700
-            tpain.action = self.ship.stopPain
-            self.ship.startPain()
         bonusCollisions = pygame.sprite.spritecollide(self.ship, self.bonuses, True)
         for b in bonusCollisions:
             b.effect()

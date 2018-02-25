@@ -25,6 +25,7 @@ class Ship(pygame.sprite.Sprite):
         self.pain = False
 
         self.weapon = None
+        self.shield = False
 
     def translate(self):
        self.points = [(a + self.x, b + self.y) for a, b in self.points]
