@@ -9,6 +9,7 @@ class Bonus(pygame.sprite.Sprite):
         self.game = game
         self.scene = scene
         self.size = 10
+        self.value = 1
         self.x = x - self.size / 2
         self.y = y - self.size / 2
         self.image = pygame.Surface([1, 1])
@@ -38,10 +39,10 @@ class Bonus(pygame.sprite.Sprite):
         return newPoints
 
     def effect(self):
-        self.scene.score += 1
+        self.scene.score += self.value
 
     def getVisualEffect(self):
-        e = texteffect.TextEffect("+1", self.game)
+        e = texteffect.TextEffect("+{}".format(self.value), self.game)
         return e
 
     def update(self, elapsed):

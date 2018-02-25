@@ -10,7 +10,7 @@ import bullet
 import math
 import bonus
 import armory
-import tripleweaponbonus
+import bonusmanager
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -21,6 +21,7 @@ class GameScene(scenes.Scene):
         self.elapsed = 0
         self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
         self.weaponarmory = armory.Armory(self.game, self.ship, self)
+        self.bonusman = bonusmanager.BonusManager(self.game, self)
         self.ship.weapon = self.weaponarmory.getSimpleWeapon()
 
         self.enemies = pygame.sprite.Group()
@@ -53,8 +54,8 @@ class GameScene(scenes.Scene):
         boostTimer.duration = 100
         boostTimer.action = self.restoreBoost
 
-        bonusTimer = self.game.getTimer()
-        bonusTimer.duration = 10000
+        bonusTimer = self.game.getRepeateTimer()
+        bonusTimer.duration = 30000
         bonusTimer.action = self.spawnBonus
 
     def restoreBoost(self):
@@ -107,10 +108,7 @@ class GameScene(scenes.Scene):
         self.enemies.add(e)
 
     def spawnBonus(self):
-        x = random.randint(100, self.game.width - 100)
-        y = random.randint(100, self.game.height - 100)
-        angle = random.uniform(0, math.pi)
-        b = tripleweaponbonus.TripleWeaponBonus(self.game, x, y, angle, self)
+        b = self.bonusman.getRandomBonus()
         self.bonuses.add(b)
 
     def setSimpleWeapon(self):
@@ -147,7 +145,8 @@ class GameScene(scenes.Scene):
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-            b = bonus.Bonus(self.game, enemy.x, enemy.y, enemy.angle, self)
+            #b = bonus.Bonus(self.game, enemy.x, enemy.y, enemy.angle, self)
+            b = self.bonusman.getSimpleBonus(enemy)
             self.bonuses.add(b)
         enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
         for enemy in enemyCollisions:
