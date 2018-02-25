@@ -145,7 +145,6 @@ class GameScene(scenes.Scene):
             t = self.game.getTimer()
             t.duration = 1500
             t.action = expl.kill
-            #b = bonus.Bonus(self.game, enemy.x, enemy.y, enemy.angle, self)
             b = self.bonusman.getSimpleBonus(enemy)
             self.bonuses.add(b)
         enemyCollisions = pygame.sprite.spritecollide(self.ship, self.enemies, True)
