@@ -24,6 +24,9 @@
     <Compile Include="bonus\helperbonus.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="bonus\healthbonus.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gameobjects\explosion.py">
       <SubType>Code</SubType>
     </Compile>
@@ -81,6 +84,7 @@
     <Folder Include="enemies\" />
     <Folder Include="gameobjects\" />
     <Folder Include="scenes\" />
+    <Folder Include="weapons\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
