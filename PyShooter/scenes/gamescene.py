@@ -19,7 +19,7 @@ class GameScene(scenes.scenes.Scene):
         self.resetScreen()
 
         self.elapsed = 0
-        self.ship = gameobjects.ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
+        self.ship = gameobjects.ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2), self.game)
         self.weaponarmory = weapons.armory.Armory(self.game, self.ship, self)
         self.bonusman = bonus.bonusmanager.BonusManager(self.game, self)
         self.ship.weapon = self.weaponarmory.getSimpleWeapon()
@@ -134,6 +134,9 @@ class GameScene(scenes.scenes.Scene):
                 if event.key == pygame.K_x:
                     b = self.bonusman.getHealthBonus()
                     self.bonuses.add(b)
+                if event.key == pygame.K_z:
+                    b = self.bonusman.getSimpleBonusAtLocationAndAngle()
+                    self.bonuses.add(b)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.ship.stopBoost()
@@ -190,6 +193,9 @@ class GameScene(scenes.scenes.Scene):
         self.bullets.update(self.elapsed)
         self.effects.update(self.elapsed)
         self.bonuses.update(self.elapsed)
+        if self.ship.onborder and not self.ship.shield:
+            self.energy = self.energy - 1
+
 
     def spawnBullet(self):
        self.ship.weapon.shoot()

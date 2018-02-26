@@ -2,8 +2,9 @@ import pygame
 import math
 
 class Ship(pygame.sprite.Sprite):
-    def __init__(self, radius, x, y):
+    def __init__(self, radius, x, y, game):
         super().__init__()
+        self.game = game
         self.radius = radius
         self.x = x
         self.y = y
@@ -23,6 +24,7 @@ class Ship(pygame.sprite.Sprite):
         self.rotate()
         self.translate()
         self.pain = False
+        self.onborder = False
 
         self.weapon = None
         self.shield = False
@@ -60,8 +62,22 @@ class Ship(pygame.sprite.Sprite):
         self.color = pygame.color.THECOLORS['yellow']
 
     def update(self, elapsed):
+        self.onborder = False
         self.x += math.sin(self.angle) * self.vspeed * self.boost * elapsed 
         self.y += -math.cos(self.angle) * self.hspeed * self.boost * elapsed
+
+        if self.x < 0:
+            self.x = 0
+            self.onborder = True
+        if self.y < 0:
+            self.y = 0
+            self.onborder = True
+        if self.x > self.game.width:
+            self.x = self.game.width
+            self.onborder = True
+        if self.y > self.game.height:
+            self.y = self.game.height
+            self.onborder = True
 
         self.rect.x = self.x - self.radius
         self.rect.y = self.y - self.radius
@@ -80,4 +96,5 @@ class Ship(pygame.sprite.Sprite):
         pass
 
     def draw(self, screen):
+        color = pygame.color.THECOLORS['yellow']
         pygame.draw.lines(screen, self.color, True, self.points, 5)
