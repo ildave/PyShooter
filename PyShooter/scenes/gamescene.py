@@ -128,6 +128,9 @@ class GameScene(scenes.scenes.Scene):
                 if event.key == pygame.K_b:
                     b = self.bonusman.getShieldBonus()
                     self.bonuses.add(b)
+                if event.key == pygame.K_h:
+                    b = self.bonusman.getHelperBonus()
+                    self.bonuses.add(b)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.ship.stopBoost()

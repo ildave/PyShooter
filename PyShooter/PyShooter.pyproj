@@ -21,7 +21,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="bonus\helperbonus.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gameobjects\explosion.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="gameobjects\helper.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="weapons\armory.py" />
