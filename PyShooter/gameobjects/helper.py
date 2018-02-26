@@ -15,13 +15,19 @@ class Helper(pygame.sprite.Sprite):
         self.angle = self.ship.angle
         self.vspeed = self.ship.vspeed
         self.hspeed = self.ship.hspeed
-        self.x = self.ship.x - 50
-        self.y = self.ship.y
-        self.originalpoints = [(0, 0)]
-        self.points = self.originalpoints
-        self.rotate()
-        self.translate()
         
+        ##calculation for the helper position
+        ##on the perpendicular of the line from top and bottom of the ship
+        startx, starty = self.ship.originalpoints[1]
+        endx, endy = self.ship.originalpoints[3]
+        middlex = (endx - startx) / 4
+        middley = (endy - starty) / 4
+        theta = math.atan2(starty - endy, startx - endx)
+        xleft = middlex + (-math.sin(theta) * 5)
+        yleft = middley + math.cos(theta) * 5
+        self.x = xleft
+        self.y = yleft
+
         deathTimer = self.game.getTimer()
         deathTimer.duration = 30000
         deathTimer.action = self.remove
@@ -29,6 +35,8 @@ class Helper(pygame.sprite.Sprite):
         self.shootTimer = self.game.getRepeateTimer()
         self.shootTimer.duration = 500
         self.shootTimer.action = self.shoot
+
+        
 
     def shoot(self):
         b = gameobjects.bullet.Bullet(self.ship, self.game, 0)
@@ -42,31 +50,23 @@ class Helper(pygame.sprite.Sprite):
         self.shootTimer.cancel()
         self.kill()
 
-    def translate(self):
-       self.points = [(a + self.x, b + self.y) for a, b in self.points]
-
-    def rotate(self):
-        newPoints = []
-        for x, y in self.originalpoints:
-            newx = x * math.cos(self.angle) - y * math.sin(self.angle)
-            newy = x * math.sin(self.angle) + y * math.cos(self.angle)
-            newPoints.append((newx, newy))
-
-        self.points = newPoints
-
     def update(self, elapsed):
-        self.angle = self.ship.angle
-        self.x += math.sin(self.angle) * self.vspeed * self.ship.boost * elapsed 
-        self.y += -math.cos(self.angle) * self.hspeed * self.ship.boost * elapsed
+        startx, starty = self.ship.points[1]
+        endx, endy = self.ship.points[3]
+        middlex = (endx - startx) / 4
+        middley = (endy - starty) / 4
+        theta = math.atan2(starty - endy, startx - endx)
+        xleft = middlex + (-math.sin(theta) * 50)
+        yleft = middley + math.cos(theta) * 50
+        self.x = xleft
+        self.y = yleft
+        self.x += self.ship.x
+        self.y += self.ship.y
 
         self.rect.x = self.x - self.radius
         self.rect.y = self.y - self.radius
 
-        self.points = self.originalpoints
-        self.rotate()
-        self.translate()
-
 
     def draw(self, screen):
-        x, y = self.points[0]
+        x, y = self.x, self.y
         pygame.draw.circle(screen, self.color, (int(x), int(y)), self.radius)
