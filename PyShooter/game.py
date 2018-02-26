@@ -1,5 +1,5 @@
 import pygame
-import titlescene
+import scenes.titlescene
 import timer
 
 class Game():
@@ -16,7 +16,7 @@ class Game():
         self.fps = 60
         self.done = False
         pygame.font.init()
-        self.scene = titlescene.TitleScene(self.screen, self)
+        self.scene = scenes.titlescene.TitleScene(self.screen, self)
         self.timers = []
 
     def getTimer(self):

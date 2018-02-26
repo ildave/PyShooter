@@ -33,17 +33,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game.py" />
-    <Compile Include="gameoverscene.py">
+    <Compile Include="scenes\gameoverscene.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="gamescene.py">
+    <Compile Include="scenes\gamescene.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="quitscene.py">
+    <Compile Include="scenes\quitscene.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PyShooter.py" />
-    <Compile Include="scenes.py" />
+    <Compile Include="scenes\scenes.py" />
     <Compile Include="shield.py" />
     <Compile Include="bonus\shieldbonus.py" />
     <Compile Include="ship.py" />
@@ -53,7 +53,7 @@
     <Compile Include="sprites.py" />
     <Compile Include="texteffect.py" />
     <Compile Include="timer.py" />
-    <Compile Include="titlescene.py">
+    <Compile Include="scenes\titlescene.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="weapons\tripleweapon.py">
@@ -69,6 +69,7 @@
   <ItemGroup>
     <Folder Include="bonus\" />
     <Folder Include="C:\Users\kgud0t\source\repos\PyShooter\PyShooter\weapons\" />
+    <Folder Include="scenes\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
