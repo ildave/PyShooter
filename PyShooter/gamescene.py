@@ -8,9 +8,8 @@ import random
 import enemy
 import bullet
 import math
-import bonus
-import armory
-import bonusmanager
+import weapons.armory
+import bonus.bonusmanager
 
 class GameScene(scenes.Scene):
     def __init__(self, screen, game):
@@ -20,8 +19,8 @@ class GameScene(scenes.Scene):
 
         self.elapsed = 0
         self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
-        self.weaponarmory = armory.Armory(self.game, self.ship, self)
-        self.bonusman = bonusmanager.BonusManager(self.game, self)
+        self.weaponarmory = weapons.armory.Armory(self.game, self.ship, self)
+        self.bonusman = bonus.bonusmanager.BonusManager(self.game, self)
         self.ship.weapon = self.weaponarmory.getSimpleWeapon()
 
         self.enemies = pygame.sprite.Group()

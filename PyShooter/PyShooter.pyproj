@@ -21,14 +21,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="armory.py" />
-    <Compile Include="bonus.py">
+    <Compile Include="weapons\armory.py" />
+    <Compile Include="bonus\bonus.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="bonusmanager.py" />
+    <Compile Include="bonus\bonusmanager.py" />
     <Compile Include="bullet.py" />
-    <Compile Include="crossweapon.py" />
-    <Compile Include="crossweaponbonus.py" />
+    <Compile Include="weapons\crossweapon.py" />
+    <Compile Include="bonus\crossweaponbonus.py" />
     <Compile Include="enemy.py">
       <SubType>Code</SubType>
     </Compile>
@@ -45,9 +45,9 @@
     <Compile Include="PyShooter.py" />
     <Compile Include="scenes.py" />
     <Compile Include="shield.py" />
-    <Compile Include="shieldbonus.py" />
+    <Compile Include="bonus\shieldbonus.py" />
     <Compile Include="ship.py" />
-    <Compile Include="simpleweapon.py">
+    <Compile Include="weapons\simpleweapon.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sprites.py" />
@@ -56,15 +56,19 @@
     <Compile Include="titlescene.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tripleweapon.py">
+    <Compile Include="weapons\tripleweapon.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tripleweaponbonus.py">
+    <Compile Include="bonus\tripleweaponbonus.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="weapon.py">
+    <Compile Include="weapons\weapon.py">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bonus\" />
+    <Folder Include="C:\Users\kgud0t\source\repos\PyShooter\PyShooter\weapons\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
