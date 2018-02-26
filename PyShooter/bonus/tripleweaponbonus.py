@@ -1,6 +1,6 @@
 import pygame
-import bonus
-import texteffect
+import bonus.bonus
+import gameobjects.texteffect
 
 class TripleWeaponBonus(bonus.bonus.Bonus):
     def __init__(self, game, x, y, angle, scene):
@@ -20,5 +20,5 @@ class TripleWeaponBonus(bonus.bonus.Bonus):
         t.action = self.scene.setSimpleWeapon
 
     def getVisualEffect(self):
-        e = texteffect.TextEffect("Triple shoot!", self.game)
+        e = gameobjects.texteffect.TextEffect("Triple shoot!", self.game)
         return e

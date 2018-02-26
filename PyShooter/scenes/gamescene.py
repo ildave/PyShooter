@@ -2,14 +2,15 @@ import pygame
 import scenes.scenes
 import scenes.quitscene
 import scenes.gameoverscene
-import sprites
-import ship
+import gameobjects.backgroundstar
+import gameobjects.ship
 import random
-import enemy
-import bullet
+import enemies.enemy
+import gameobjects.bullet
 import math
 import weapons.armory
 import bonus.bonusmanager
+import gameobjects.explosion
 
 class GameScene(scenes.scenes.Scene):
     def __init__(self, screen, game):
@@ -18,7 +19,7 @@ class GameScene(scenes.scenes.Scene):
         self.resetScreen()
 
         self.elapsed = 0
-        self.ship = ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
+        self.ship = gameobjects.ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2))
         self.weaponarmory = weapons.armory.Armory(self.game, self.ship, self)
         self.bonusman = bonus.bonusmanager.BonusManager(self.game, self)
         self.ship.weapon = self.weaponarmory.getSimpleWeapon()
@@ -84,7 +85,7 @@ class GameScene(scenes.scenes.Scene):
             for j in range (0, 5):
                 x = random.randint(0, self.game.width)
                 y = random.randint(i, i + 10)
-                s = sprites.Star(x, y)
+                s = gameobjects.backgroundstar.Star(x, y)
                 stars.append(s)
         return stars
 
@@ -103,12 +104,11 @@ class GameScene(scenes.scenes.Scene):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
     def spawnEnemy(self):
-        e = enemy.Enemy(self.game)
+        e = enemies.enemy.Enemy(self.game)
         self.enemies.add(e)
 
     def spawnBonus(self):
-        #b = self.bonusman.getRandomBonus()
-        b = self.bonusman.getShieldBonus()
+        b = self.bonusman.getRandomBonus()
         self.bonuses.add(b)
 
     def setSimpleWeapon(self):
@@ -144,7 +144,7 @@ class GameScene(scenes.scenes.Scene):
         hitEnemies = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         self.score += len(hitEnemies)
         for enemy in hitEnemies:
-            expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
+            expl = gameobjects.explosion.Explosion(enemy.rect.x, enemy.rect.y)
             self.effects.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
@@ -159,7 +159,7 @@ class GameScene(scenes.scenes.Scene):
                 tpain.duration = 700
                 tpain.action = self.ship.stopPain
                 self.ship.startPain()
-            expl = sprites.Explosion(enemy.rect.x, enemy.rect.y)
+            expl = gameobjects.explosion.Explosion(enemy.rect.x, enemy.rect.y)
             self.effects.add(expl)
             t = self.game.getTimer()
             t.duration = 1500
@@ -169,7 +169,7 @@ class GameScene(scenes.scenes.Scene):
             b.effect()
             ve = b.getVisualEffect()
             self.effects.add(ve)
-            expl = sprites.Explosion(b.rect.x, b.rect.y)
+            expl = gameobjects.explosion.Explosion(b.rect.x, b.rect.y)
             self.effects.add(expl)
             expl.color = pygame.color.THECOLORS['red']
             expl.radius = 2

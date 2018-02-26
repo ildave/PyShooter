@@ -21,15 +21,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="gameobjects\explosion.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="weapons\armory.py" />
     <Compile Include="bonus\bonus.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="bonus\bonusmanager.py" />
-    <Compile Include="bullet.py" />
+    <Compile Include="gameobjects\bullet.py" />
     <Compile Include="weapons\crossweapon.py" />
     <Compile Include="bonus\crossweaponbonus.py" />
-    <Compile Include="enemy.py">
+    <Compile Include="enemies\enemy.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="game.py" />
@@ -44,14 +47,14 @@
     </Compile>
     <Compile Include="PyShooter.py" />
     <Compile Include="scenes\scenes.py" />
-    <Compile Include="shield.py" />
+    <Compile Include="gameobjects\shield.py" />
     <Compile Include="bonus\shieldbonus.py" />
-    <Compile Include="ship.py" />
+    <Compile Include="gameobjects\ship.py" />
     <Compile Include="weapons\simpleweapon.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="sprites.py" />
-    <Compile Include="texteffect.py" />
+    <Compile Include="gameobjects\backgroundstar.py" />
+    <Compile Include="gameobjects\texteffect.py" />
     <Compile Include="timer.py" />
     <Compile Include="scenes\titlescene.py">
       <SubType>Code</SubType>
@@ -69,6 +72,8 @@
   <ItemGroup>
     <Folder Include="bonus\" />
     <Folder Include="C:\Users\kgud0t\source\repos\PyShooter\PyShooter\weapons\" />
+    <Folder Include="enemies\" />
+    <Folder Include="gameobjects\" />
     <Folder Include="scenes\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

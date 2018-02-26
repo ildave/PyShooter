@@ -1,6 +1,6 @@
 import pygame
-import bonus
-import texteffect
+import bonus.bonus
+import gameobjects.texteffect
 
 class CrossWeaponBonus(bonus.bonus.Bonus):
     def __init__(self, game, x, y, angle, scene):
@@ -20,5 +20,5 @@ class CrossWeaponBonus(bonus.bonus.Bonus):
         t.action = self.scene.setSimpleWeapon
 
     def getVisualEffect(self):
-        e = texteffect.TextEffect("Cross shoot!", self.game)
+        e = gameobjects.texteffect.TextEffect("Cross shoot!", self.game)
         return e
