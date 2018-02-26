@@ -125,6 +125,10 @@ class GameScene(scenes.Scene):
                     self.game.scene = quitScene
                 if event.key == pygame.K_SPACE:
                     self.spawnBullet()
+                #shortcuts to debug
+                if event.key == pygame.K_b:
+                    b = self.bonusman.getShieldBonus()
+                    self.bonuses.add(b)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.ship.stopBoost()

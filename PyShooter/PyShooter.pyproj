@@ -21,10 +21,14 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="armory.py" />
     <Compile Include="bonus.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="bonusmanager.py" />
     <Compile Include="bullet.py" />
+    <Compile Include="crossweapon.py" />
+    <Compile Include="crossweaponbonus.py" />
     <Compile Include="enemy.py">
       <SubType>Code</SubType>
     </Compile>
@@ -40,11 +44,14 @@
     </Compile>
     <Compile Include="PyShooter.py" />
     <Compile Include="scenes.py" />
+    <Compile Include="shield.py" />
+    <Compile Include="shieldbonus.py" />
     <Compile Include="ship.py" />
     <Compile Include="simpleweapon.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="sprites.py" />
+    <Compile Include="texteffect.py" />
     <Compile Include="timer.py" />
     <Compile Include="titlescene.py">
       <SubType>Code</SubType>

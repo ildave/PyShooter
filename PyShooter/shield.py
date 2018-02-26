@@ -6,7 +6,8 @@ class Shield(pygame.sprite.Sprite):
         self.game = game
         self.scene = scene
         self.ship = ship
-        self.radius = 25
+        self.ship.shield = True
+        self.radius = 35
         self.color = self.ship.color
         self.x = self.ship.x
         self.y = self.ship.y
@@ -20,7 +21,7 @@ class Shield(pygame.sprite.Sprite):
 
     def update(self, elapsed):
         self.x = self.ship.x
-        self.y = self.ship.x
+        self.y = self.ship.y
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius, 3)
