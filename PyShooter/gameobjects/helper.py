@@ -23,8 +23,8 @@ class Helper(pygame.sprite.Sprite):
         middlex = (endx - startx) / 4
         middley = (endy - starty) / 4
         theta = math.atan2(starty - endy, startx - endx)
-        xleft = middlex + (-math.sin(theta) * 5)
-        yleft = middley + math.cos(theta) * 5
+        xleft = middlex + (-math.sin(theta) * 50)
+        yleft = middley + math.cos(theta) * 50
         self.x = xleft
         self.y = yleft
 
