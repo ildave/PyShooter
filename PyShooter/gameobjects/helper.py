@@ -3,12 +3,13 @@ import math
 import gameobjects.bullet
 
 class Helper(pygame.sprite.Sprite):
-    def __init__(self, game, scene, ship):
+    def __init__(self, game, scene, ship, direction=1):
         super().__init__()
         self.game = game
         self.scene = scene
         self.ship = ship
         self.radius = 5
+        self.direction = direction #1: right, -1:left
         self.image = pygame.Surface([self.radius * 2, self.radius * 2])
         self.rect = self.image.get_rect()
         self.color = self.ship.color
@@ -23,8 +24,8 @@ class Helper(pygame.sprite.Sprite):
         middlex = (endx - startx) / 4
         middley = (endy - starty) / 4
         theta = math.atan2(starty - endy, startx - endx)
-        xleft = middlex + (-math.sin(theta) * 50)
-        yleft = middley + math.cos(theta) * 50
+        xleft = middlex + (-math.sin(theta) * 50 * self.direction)
+        yleft = middley + math.cos(theta) * 50 * self.direction
         self.x = xleft
         self.y = yleft
 
@@ -56,8 +57,8 @@ class Helper(pygame.sprite.Sprite):
         middlex = (endx - startx) / 4
         middley = (endy - starty) / 4
         theta = math.atan2(starty - endy, startx - endx)
-        xleft = middlex + (-math.sin(theta) * 50)
-        yleft = middley + math.cos(theta) * 50
+        xleft = middlex + (-math.sin(theta) * 50 * self.direction)
+        yleft = middley + math.cos(theta) * 50 * self.direction
         self.x = xleft
         self.y = yleft
         self.x += self.ship.x
