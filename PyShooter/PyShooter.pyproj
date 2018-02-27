@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="bonus\doublehelperbonus.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="bonus\helperbonus.py">
       <SubType>Code</SubType>
     </Compile>

@@ -3,13 +3,14 @@ import bonus.tripleweaponbonus
 import bonus.crossweaponbonus
 import bonus.shieldbonus
 import bonus.helperbonus
+import bonus.doublehelperbonus
 import bonus.healthbonus
 import random
 import math
 
 class BonusManager():
     def __init__(self, game, scene):
-        self.bonuses = ['simple', 'simplemulti', 'tripleweapon', 'crossweapon', 'shield', 'helper', 'health']
+        self.bonuses = ['simple', 'simplemulti', 'tripleweapon', 'crossweapon', 'shield', 'helper', 'health', 'doublehelper']
         self.game = game
         self.scene = scene
 
@@ -29,6 +30,8 @@ class BonusManager():
             return self.getHelperBonus()
         if bonus == 'health':
             return self.getHealthBonus()
+        if bonus == 'doublehelper':
+            return self.getDoubleHelperBonus()
 
     def getSimpleMultiBonus(self):
         b = self.getSimpleBonusAtLocationAndAngle()
@@ -80,4 +83,11 @@ class BonusManager():
         y = random.randint(100, self.game.height - 100)
         angle = random.uniform(0, math.pi)
         b = bonus.healthbonus.HealthBonus(self.game, x, y, angle, self.scene)
+        return b
+
+    def getDoubleHelperBonus(self):
+        x = random.randint(100, self.game.width - 100)
+        y = random.randint(100, self.game.height - 100)
+        angle = random.uniform(0, math.pi)
+        b = bonus.doublehelperbonus.DoubleHelperBonus(self.game, x, y, angle, self.scene)
         return b

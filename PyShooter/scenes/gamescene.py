@@ -137,6 +137,9 @@ class GameScene(scenes.scenes.Scene):
                 if event.key == pygame.K_z:
                     b = self.bonusman.getSimpleBonusAtLocationAndAngle()
                     self.bonuses.add(b)
+                if event.key == pygame.K_d:
+                    b = self.bonusman.getDoubleHelperBonus()
+                    self.bonuses.add(b)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     self.ship.stopBoost()
