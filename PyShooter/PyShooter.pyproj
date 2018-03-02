@@ -36,6 +36,9 @@
     <Compile Include="enemies\enemiesmanager.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enemies\zigzagenemy.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gameobjects\explosion.py">
       <SubType>Code</SubType>
     </Compile>
