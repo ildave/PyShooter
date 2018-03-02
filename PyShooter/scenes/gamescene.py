@@ -5,7 +5,7 @@ import scenes.gameoverscene
 import gameobjects.backgroundstar
 import gameobjects.ship
 import random
-import enemies.enemy
+import enemies.enemiesmanager
 import gameobjects.bullet
 import math
 import weapons.armory
@@ -22,6 +22,7 @@ class GameScene(scenes.scenes.Scene):
         self.ship = gameobjects.ship.Ship(20, int(self.game.width / 2), int(self.game.height / 2), self.game)
         self.weaponarmory = weapons.armory.Armory(self.game, self.ship, self)
         self.bonusman = bonus.bonusmanager.BonusManager(self.game, self)
+        self.enemiesman = enemies.enemiesmanager.EnemiesManager(self.game)
         self.ship.weapon = self.weaponarmory.getSimpleWeapon()
 
         self.enemies = pygame.sprite.Group()
@@ -104,7 +105,7 @@ class GameScene(scenes.scenes.Scene):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
     def spawnEnemy(self):
-        e = enemies.enemy.Enemy(self.game)
+        e = self.enemiesman.spawnEnemy()
         self.enemies.add(e)
 
     def spawnBonus(self):

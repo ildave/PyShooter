@@ -30,6 +30,12 @@
     <Compile Include="bonus\healthbonus.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enemies\curvingenemy.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="enemies\enemiesmanager.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="gameobjects\explosion.py">
       <SubType>Code</SubType>
     </Compile>
