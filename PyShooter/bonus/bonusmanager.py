@@ -22,7 +22,7 @@ class BonusManager():
             return self.getSimpleMultiBonus()
         if bonus == 'tripleweapon':
             return self.getTripleWeaponBonus()
-        if bonus == 'crossweapopn':
+        if bonus == 'crossweapon':
             return self.getCrossWeaponBonus()
         if bonus == 'shield':
             return self.getShieldBonus()
