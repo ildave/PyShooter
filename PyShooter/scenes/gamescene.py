@@ -6,6 +6,7 @@ import gameobjects.backgroundstar
 import gameobjects.ship
 import random
 import enemies.enemiesmanager
+import enemies.wave
 import gameobjects.bullet
 import math
 import weapons.armory
@@ -38,14 +39,11 @@ class GameScene(scenes.scenes.Scene):
         self.font = pygame.font.SysFont('Arial', 30)
 
         self.stars = self.loadBackground()
-        
-        enemiesTimer = self.game.getRepeateTimer()
-        enemiesTimer.duration = 1000
-        enemiesTimer.action = self.spawnEnemy
 
-        firstEnemyTimer = self.game.getTimer()
-        firstEnemyTimer.duration = 1000
-        firstEnemyTimer.action = self.spawnEnemy
+        # wave-based enemy spawning: start with the first wave immediately
+        self.wave_number = 1
+        self.current_wave = enemies.wave.Wave(self.game, self.enemiesman, size=5)
+        self.current_wave.spawn(self.enemies)
 
         energyTimer = self.game.getRepeateTimer()
         energyTimer.duration = 5000
@@ -105,6 +103,7 @@ class GameScene(scenes.scenes.Scene):
         self.screen.fill(pygame.color.THECOLORS['black'])
 
     def spawnEnemy(self):
+        # Kept for potential debugging/use, but regular spawning is wave-based now.
         e = self.enemiesman.spawnEnemy()
         self.enemies.add(e)
 
@@ -197,6 +196,10 @@ class GameScene(scenes.scenes.Scene):
         self.bullets.update(self.elapsed)
         self.effects.update(self.elapsed)
         self.bonuses.update(self.elapsed)
+        # when all enemies in the current wave are dead and the player is alive,
+        # start the next, slightly larger wave
+        if not self.enemies and self.energy > 0:
+            self.start_next_wave()
         if self.ship.onborder and not self.ship.shield:
             self.energy = self.energy - 1
 
@@ -234,6 +237,14 @@ class GameScene(scenes.scenes.Scene):
         self.drawStats()
 
         pygame.display.flip()
+
+    def start_next_wave(self):
+        self.wave_number += 1
+        # simple progression: each wave has 2 more enemies than the previous,
+        # starting from 5
+        size = 5 + (self.wave_number - 1) * 2
+        self.current_wave = enemies.wave.Wave(self.game, self.enemiesman, size=size)
+        self.current_wave.spawn(self.enemies)
 
     def drawBackground(self):
         for s in self.stars:
