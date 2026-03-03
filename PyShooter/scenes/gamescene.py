@@ -40,10 +40,12 @@ class GameScene(scenes.scenes.Scene):
 
         self.stars = self.loadBackground()
 
-        # wave-based enemy spawning: start with the first wave immediately
-        self.wave_number = 1
-        self.current_wave = enemies.wave.Wave(self.game, self.enemiesman, size=5)
-        self.current_wave.spawn(self.enemies)
+        # wave-based enemy spawning: configured via a timer that
+        # spawns enemies in the current wave one after another.
+        self.wave_number = 0
+        self.current_wave = None
+        self.wave_spawn_timer = None
+        self.start_next_wave()
 
         energyTimer = self.game.getRepeateTimer()
         energyTimer.duration = 5000
@@ -196,9 +198,13 @@ class GameScene(scenes.scenes.Scene):
         self.bullets.update(self.elapsed)
         self.effects.update(self.elapsed)
         self.bonuses.update(self.elapsed)
-        # when all enemies in the current wave are dead and the player is alive,
-        # start the next, slightly larger wave
-        if not self.enemies and self.energy > 0:
+        # when all enemies in the current wave are dead and the player is
+        # alive, and we've finished spawning this wave, start the next one
+        if (
+            not self.enemies
+            and self.energy > 0
+            and (self.current_wave is None or self.current_wave.done_spawning)
+        ):
             self.start_next_wave()
         if self.ship.onborder and not self.ship.shield:
             self.energy = self.energy - 1
@@ -244,7 +250,25 @@ class GameScene(scenes.scenes.Scene):
         # starting from 5
         size = 5 + (self.wave_number - 1) * 2
         self.current_wave = enemies.wave.Wave(self.game, self.enemiesman, size=size)
-        self.current_wave.spawn(self.enemies)
+
+        # set up a repeating timer that spawns one enemy from the wave
+        # at each tick until the wave is fully spawned
+        if self.wave_spawn_timer is not None:
+            self.wave_spawn_timer.cancel()
+        self.wave_spawn_timer = self.game.getRepeateTimer()
+        self.wave_spawn_timer.duration = 500  # ms between spawns in a wave
+        self.wave_spawn_timer.action = self.spawn_enemy_from_wave
+
+    def spawn_enemy_from_wave(self):
+        if self.current_wave is None:
+            return
+        if not self.current_wave.done_spawning:
+            self.current_wave.spawn_next(self.enemies)
+        else:
+            # stop this wave's spawner once all have been created
+            if self.wave_spawn_timer is not None:
+                self.wave_spawn_timer.cancel()
+                self.wave_spawn_timer = None
 
     def drawBackground(self):
         for s in self.stars:
