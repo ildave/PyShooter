@@ -218,7 +218,9 @@ class GameScene(scenes.scenes.Scene):
         self.screen.blit(textsurface, (10, self.game.height - 30 - 2))
 
     def drawStats(self):
-        statsString = "Energy: {} Boost: {}".format(self.energy, self.boost)
+        statsString = "Wave: {}  Energy: {}  Boost: {}".format(
+            self.wave_number, self.energy, self.boost
+        )
         w, h = self.font.size(statsString)
         textsurface = self.font.render(statsString, False, pygame.color.THECOLORS['white'])
         x = self.game.width - w
