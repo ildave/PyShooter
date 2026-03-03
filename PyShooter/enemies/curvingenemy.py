@@ -7,6 +7,7 @@ class CurvingEnemy(enemies.enemy.Enemy):
     def __init__(self, game):
         super().__init__(game)
         self.angularspeed = -0.0001*math.pi
+        self.color = pygame.color.THECOLORS['cyan'] 
 
     def update(self, elapsed, gameScene):
         if random.randint(0, 9) == 0:

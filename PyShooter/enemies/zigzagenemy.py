@@ -9,6 +9,7 @@ class ZigZagEnemy(enemies.enemy.Enemy):
         self.timer = self.game.getRepeateTimer()
         self.timer.duration = 3000
         self.timer.action = self.changeAngle
+        self.color = self.color = pygame.color.THECOLORS['green']
 
     def changeAngle(self):
         if random.randint(0, 1) == 0:
