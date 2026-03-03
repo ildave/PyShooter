@@ -1,5 +1,6 @@
 import pygame
 import math
+import os
 
 class Ship(pygame.sprite.Sprite):
     def __init__(self, radius, x, y, game):
@@ -98,3 +99,46 @@ class Ship(pygame.sprite.Sprite):
     def draw(self, screen):
         color = pygame.color.THECOLORS['yellow']
         pygame.draw.lines(screen, self.color, True, self.points, 5)
+
+
+class GraphicalShip(Ship):
+    """A Ship that uses an image sprite from `assets/ship.png`.
+
+    The image is scaled to (radius*2, radius*2), rotated to match the
+    ship's `angle`, and blitted centered at (x, y).
+    """
+    def __init__(self, radius, x, y, game, image_path=None):
+        super().__init__(radius, x, y, game)
+        # determine image path relative to project layout if not provided
+        if image_path is None:
+            base_dir = os.path.dirname(os.path.dirname(__file__))
+            image_path = os.path.join(base_dir, 'assets', 'ship.png')
+
+        try:
+            img = pygame.image.load(image_path).convert_alpha()
+        except Exception:
+            # fallback to a simple surface if loading fails
+            img = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
+            pygame.draw.polygon(img, self.color, [(0, self.radius*2), (self.radius, 0), (self.radius*2, self.radius*2)])
+
+        # scale image to fit the logical radius
+        try:
+            self.orig_image = pygame.transform.smoothscale(img, (int(self.radius * 2), int(self.radius * 2)))
+        except Exception:
+            self.orig_image = pygame.transform.scale(img, (int(self.radius * 2), int(self.radius * 2)))
+
+        self.image = self.orig_image
+        self.rect = self.image.get_rect()
+        # keep rect centered at ship position
+        self.rect.center = (int(self.x), int(self.y))
+
+    def update(self, elapsed):
+        # reuse movement/rotation logic from base class
+        super().update(elapsed)
+        # rotate image to match angle (convert radians to degrees)
+        angle_deg = -math.degrees(self.angle)
+        self.image = pygame.transform.rotate(self.orig_image, angle_deg)
+        self.rect = self.image.get_rect(center=(int(self.x), int(self.y)))
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
